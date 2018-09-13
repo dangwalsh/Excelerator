@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excelerator", "Excelerator\Excelerator.csproj", "{1186B2F3-43EA-41FD-93FF-B29D760BF91C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excelerator.Tests", "Excelerator.Tests\Excelerator.Tests.csproj", "{D3E76A77-3D51-4A0F-A8B4-2D99A7CCFF64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1186B2F3-43EA-41FD-93FF-B29D760BF91C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1186B2F3-43EA-41FD-93FF-B29D760BF91C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1186B2F3-43EA-41FD-93FF-B29D760BF91C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3E76A77-3D51-4A0F-A8B4-2D99A7CCFF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E76A77-3D51-4A0F-A8B4-2D99A7CCFF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E76A77-3D51-4A0F-A8B4-2D99A7CCFF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3E76A77-3D51-4A0F-A8B4-2D99A7CCFF64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
