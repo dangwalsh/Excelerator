@@ -4,43 +4,45 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.Attributes;
     using System.Collections.Generic;
-    using System.Linq;
-    using System;
 
     [Transaction(TransactionMode.Manual)]
     public class Command : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-        {
-            // TODO: launch UI
+        {        
             var document = commandData.Application.ActiveUIDocument.Document;
-            
-            var process = new Process(document, @"C:\Users\22791\Desktop\ImportTest.xlsx");
+
+            // TODO: UI launch
+
+            // TODO: UI File Open Dialog
+            var controller = new DataController(document, @"C:\Users\22791\Desktop\ImportTest.xlsx");
+
+            // TODO: UI GridView with Text Box containing cell range and button to Select in Excel
+            var fieldNames = new List<string> { "Name", "Comments" };
+            foreach(var name in fieldNames)
+                controller.SelectData(name);
+
+            // TODO: UI Dropdown bound to Categories
             var category = new ElementId(BuiltInCategory.OST_Rooms);
+            var schedule = controller.GetNewSchedule(document, category);
 
-            process.GetSelection();
+            // TODO: UI ListView with available Fields and ListView with Fields to Add, (Add Remove buttons between)
+            var fields = new List<SchedulableField>();
+            foreach (var name in fieldNames)
+                fields.Add(controller.GetSchedulableFields(document, schedule, name));
 
-            var schedule = process.CreateSchedule(category);
-            var fields = new List<SchedulableField>
-            {
-                GetField(document, schedule, "Name")
-            };
+            controller.AddScheduleFields(document, schedule, fields);
 
-            process.AddFields(schedule, fields);
+            // TODO: UI Button to execute
+            controller.AddScheduleKeys(document, schedule, category);
+            controller.AddDataToKeys(document, schedule);
 
             return Result.Succeeded;
         }
 
-        SchedulableField CreateField(Document document, ViewSchedule schedule, ElementId parameterId)
-        {          
-            return new SchedulableField(ScheduleFieldType.Instance, parameterId);
-        }
-
-        SchedulableField GetField(Document document, ViewSchedule schedule, string name)
+        public void MockInterface()
         {
-            var schedFields = schedule.Definition.GetSchedulableFields();
 
-            return schedFields.FirstOrDefault(x => x.GetName(document) == name);
         }
     }
 }
