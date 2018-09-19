@@ -1,21 +1,25 @@
 ﻿namespace Gensler.Revit.Excelerator
 {
+    using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using Autodesk.Revit.Attributes;
+    using Gensler.Revit.Excelerator.Views;
     using System.Collections.Generic;
 
     [Transaction(TransactionMode.Manual)]
-    public class Command : IExternalCommand
+    public class RevitCommand : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {        
-            var document = commandData.Application.ActiveUIDocument.Document;
+            m_Document = commandData.Application.ActiveUIDocument.Document;
 
             // TODO: UI launch
+            var window = new MainWindow();
+            window.Show();
 
+            /*
             // TODO: UI File Open Dialog
-            var controller = new DataController(document, @"C:\Users\22791\Desktop\ImportTest.xlsx");
+            var controller = new Importer(@"C:\Users\22791\Desktop\ImportTest.xlsx");
 
             // TODO: UI GridView with Text Box containing cell range and button to Select in Excel
             var fieldNames = new List<string> { "Name", "Comments" };
@@ -24,25 +28,23 @@
 
             // TODO: UI Dropdown bound to Categories
             var category = new ElementId(BuiltInCategory.OST_Rooms);
-            var schedule = controller.GetNewSchedule(document, category);
+            var schedule = controller.GetNewSchedule(m_Document, category);
 
             // TODO: UI ListView with available Fields and ListView with Fields to Add, (Add Remove buttons between)
             var fields = new List<SchedulableField>();
             foreach (var name in fieldNames)
-                fields.Add(controller.GetSchedulableFields(document, schedule, name));
+                fields.Add(controller.GetSchedulableFields(m_Document, schedule, name));
 
-            controller.AddScheduleFields(document, schedule, fields);
+            controller.AddScheduleFields(m_Document, schedule, fields);
 
             // TODO: UI Button to execute
-            controller.AddScheduleKeys(document, schedule, category);
-            controller.AddDataToKeys(document, schedule);
+            controller.AddScheduleKeys(m_Document, schedule, category);
+            controller.AddDataToKeys(m_Document, schedule);
+            */
 
             return Result.Succeeded;
         }
 
-        public void MockInterface()
-        {
-
-        }
+        public static Document m_Document;
     }
 }

@@ -7,16 +7,17 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    class DataController
+    class Importer
     {
         Application m_ExcelApp;
         List<Column> m_DataColumns;
 
-        public DataController(Document document, string path)
+        
+
+        public Importer(string path)
         {
             m_DataColumns = new List<Column>();
             m_ExcelApp = new Application();
-
             m_ExcelApp.Workbooks.Open(path);
         }
 

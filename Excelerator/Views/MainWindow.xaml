@@ -1,0 +1,92 @@
+﻿<Window x:Class="Gensler.Revit.Excelerator.Views.MainWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Gensler.Revit.Excelerator.Views"
+             mc:Ignorable="d" 
+             Height="500" Width="550" MinHeight="500" MinWidth="500">
+    <Window.Resources>
+        <ResourceDictionary Source="MainWindowResources.xaml"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.Resources>
+            <local:MainWindowViewModel x:Key="windowViewModel"/>
+        </Grid.Resources>
+        <Grid  Style="{DynamicResource gridStyle}" DataContext="{Binding Source={StaticResource windowViewModel}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
+                <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
+                <RowDefinition Style="{DynamicResource rowStyleFlex}"/>
+                <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Style="{DynamicResource gridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleFixed}"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Style="{DynamicResource txtBoxStyle}" Text="{Binding ExcelPath}"/>
+                <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="File" Command="{Binding FileCommand}"/>
+            </Grid>
+            <Grid Grid.Row="1" Style="{DynamicResource gridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{DynamicResource colStyleMinMax}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0" Name="Categories" Style="{DynamicResource cmbBoxStyle}" ItemsSource="{Binding CategoryItems}" DisplayMemberPath="Name">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=Categories, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Label Grid.Column="2" Style="{DynamicResource labelStyle}" Content="Mapping"/>
+            </Grid>
+            <Grid Grid.Row="2" Style="{DynamicResource gridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{DynamicResource colStyleMinMax}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Definition.Name"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
+                        <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="1" Style="{DynamicResource btnStyleWide}" Content="&gt;"/>
+                    <Button Grid.Row="2" Style="{DynamicResource btnStyleWide}" Content="&lt;"/>
+                </Grid>
+                <ListView Grid.Column="2" Name="ParameterMap">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="Cells" DisplayMemberBinding="{Binding Cells}"/>
+                                <GridViewColumn Header="Select" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Pick" Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=ParameterMap, Path=SelectedItem}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn> 
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <Grid Grid.Row="3" Style="{DynamicResource gridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
+                    <ColumnDefinition Style="{DynamicResource colStyleFixed}"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Style="{DynamicResource textBlockStyle}" />
+                <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="Ok" Command="{Binding RunCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

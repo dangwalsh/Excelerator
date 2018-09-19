@@ -70,6 +70,21 @@
             transaction.Commit();
         }
 
+        public static List<Parameter> GetParametersInCategory(Document document, Category category)
+        {
+            var element = new FilteredElementCollector(document)
+                .OfCategoryId(category.Id)
+                .FirstElement();
+
+            if (element == null) return null;
+
+            var parameters = new List<Parameter>();
+            foreach (Parameter parameter in element.Parameters)
+                parameters.Add(parameter);
+
+            return parameters;
+        }
+
         static bool IsAlreadyAdded(ViewSchedule schedule, SchedulableField field)
         {
             var ids = schedule.Definition.GetFieldOrder();
@@ -84,5 +99,6 @@
 
             return isAdded;
         }
+
     }
 }
