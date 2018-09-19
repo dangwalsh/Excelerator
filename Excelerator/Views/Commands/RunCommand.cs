@@ -18,6 +18,7 @@
 
         public void Execute(object parameter)
         {
+            var window = parameter as MainWindow;
             var document = RevitCommand._Document;
             var category = _viewModel.SelectedCategory;
             var importer = _viewModel.Importer;
@@ -30,6 +31,8 @@
             importer.AddScheduleFields(document, schedule, fields);
             importer.AddScheduleKeys(document, schedule, _viewModel.NumRows);
             importer.AddDataToKeys(document, schedule, _viewModel.ExcelItems, _viewModel.NumRows, _viewModel.NumCols);
+
+            window.Close();
         }
 
         public RunCommand(MainWindowViewModel viewModel)

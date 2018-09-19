@@ -6,7 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Gensler.Revit.Excelerator.Views"
              mc:Ignorable="d" 
-             Height="500" Width="550" MinHeight="500" MinWidth="500">
+             Height="500" Width="550" MinHeight="500" MinWidth="500"
+             Name="ThisWindow">
     <Window.Resources>
         <ResourceDictionary Source="MainWindowResources.xaml"/>
     </Window.Resources>
@@ -96,7 +97,7 @@
                     <ColumnDefinition Style="{DynamicResource colStyleFixed}"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Style="{DynamicResource textBlockStyle}" />
-                <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="Ok" Command="{Binding RunCommand}"/>
+                <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="Ok" Command="{Binding RunCommand}" CommandParameter="{Binding ElementName=ThisWindow}"/>
             </Grid>
         </Grid>
     </Grid>

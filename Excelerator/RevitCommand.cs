@@ -4,7 +4,6 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Gensler.Revit.Excelerator.Views;
-    using System.Collections.Generic;
 
     [Transaction(TransactionMode.Manual)]
     public class RevitCommand : IExternalCommand
