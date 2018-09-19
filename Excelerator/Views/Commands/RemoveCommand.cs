@@ -4,9 +4,9 @@
     using System.Linq;
     using System.Windows.Input;
 
-    class EditCommand : ICommand
+    class RemoveCommand : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
@@ -18,12 +18,17 @@
         public void Execute(object parameter)
         {
             var excelItem = _viewModel.SelectedExcelItem;
+            var excelItems = _viewModel.ExcelItems;
+            var paramItems = _viewModel.ParameterItems;
 
-            _viewModel.Importer.SelectData(excelItem);
-            _viewModel.NumRows = _viewModel.ExcelItems.Max(x => x.Count);
+            excelItems.Remove(excelItem);
+            paramItems.Add(excelItem.RevitParam);
+
+            _viewModel.NumRows = excelItems.Max(x => x.Count);
+            _viewModel.NumCols--;
         }
 
-        public EditCommand(MainWindowViewModel viewModel)
+        public RemoveCommand(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }

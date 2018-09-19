@@ -9,30 +9,43 @@
 
     class Importer
     {
-        Application m_ExcelApp;
-        List<Column> m_DataColumns;
-
+        Application _excelApp;
+        ExcelItem _excelItem;
         
 
         public Importer(string path)
         {
-            m_DataColumns = new List<Column>();
-            m_ExcelApp = new Application();
-            m_ExcelApp.Workbooks.Open(path);
+            _excelApp = new Application();
+            _excelApp.Workbooks.Open(path);
         }
-
-        public void SelectData(string name)
+        public void SelectData(ExcelItem item)
         {
-            m_ExcelApp.Visible = true;
-            m_DataColumns.Add(ExcelFacade.GetSelection(m_ExcelApp, name));
-            m_ExcelApp.Visible = false;
+            _excelItem = item;
+
+            _excelApp.Visible = true;
+            _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
         }
 
-        public ViewSchedule GetNewSchedule(Document document, ElementId category)
+        public void OnSheetSelectionChanged(object sheet, Range range)
+        {
+            _excelItem.ExcelRange = range;
+
+            _excelApp.Visible = false;
+            _excelApp.SheetSelectionChange -= OnSheetSelectionChanged;
+        }
+
+        public ViewSchedule GetNewSchedule(Document document, Category category)
         {
             if (document == null) return null;
 
-            return ScheduleFacade.GetNewSchedule(document, category);
+            return ScheduleFacade.GetNewSchedule(document, category.Id);
+        }
+
+        public IList<SchedulableField> GetSchedulableFields(Document document, ViewSchedule schedule)
+        {
+            var schedFields = schedule.Definition.GetSchedulableFields();
+
+            return schedFields;
         }
 
         public SchedulableField GetSchedulableFields(Document document, ViewSchedule schedule, string name)
@@ -48,34 +61,32 @@
                 ScheduleFacade.AddScheduleField(document, schedule, field);
         }
 
-        public void AddScheduleKeys(Document document, ViewSchedule schedule, ElementId category)
+        public void AddScheduleKeys(Document document, ViewSchedule schedule, int count)
         {
-            for (int i = 0; i < m_DataColumns[0].Count; ++i)
+            for (int i = 0; i < count; ++i)
                 ScheduleFacade.AddScheduleKey(document, schedule);
         }
 
-        public void AddDataToKeys(Document document, ViewSchedule schedule)
+        public void AddDataToKeys(Document document, ViewSchedule schedule, ICollection<ExcelItem> excelItems, int numRows, int numCols)
         {
             var keys = ScheduleFacade.GetScheduleKeys(document, schedule);
-            var dataRows = ColumnsToRows(m_DataColumns);
+            var dataRows = ColumnsToRows(excelItems, numRows, excelItems.Count);
 
             ScheduleFacade.AddDataToKeys(document, dataRows, keys);
         }
 
-        List<Dictionary<string, string>> ColumnsToRows(List<Column> dataColumns)
+        List<Dictionary<string, string>> ColumnsToRows(ICollection<ExcelItem> excelItems, int numRows, int numCols)
         {
-            var numCols = dataColumns.Count;
-            var numRows = dataColumns[0].Count;      
             var dataRows = new List<Dictionary<string, string>>();
 
             for (int i = 0; i < numRows; ++i)
             {
                 var dataRow = new Dictionary<string, string>();
 
-                foreach (var col in dataColumns)
+                foreach (var item in excelItems)
                 {
-                    var name = col.Name;
-                    dataRow.Add(name, col.Items[i] as string);
+                    var name = item.RevitParam.Name;
+                    dataRow.Add(name, item.Values[i] as string);
                 }
 
                 dataRows.Add(dataRow);

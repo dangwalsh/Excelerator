@@ -6,6 +6,11 @@
 
     static class ExcelFacade
     {
+        public static Range GetRange(Application application)
+        {
+            return application.Selection as Range;
+        }
+
         public static Column GetSelection(Application application, string name)
         {
             var selection = application.Selection as Range;

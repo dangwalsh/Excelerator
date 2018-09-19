@@ -14,7 +14,7 @@
         <Grid.Resources>
             <local:MainWindowViewModel x:Key="windowViewModel"/>
         </Grid.Resources>
-        <Grid  Style="{DynamicResource gridStyle}" DataContext="{Binding Source={StaticResource windowViewModel}}">
+        <Grid  Name="MasterGrid" Style="{DynamicResource gridStyle}" DataContext="{Binding Source={StaticResource windowViewModel}}">
             <Grid.RowDefinitions>
                 <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
                 <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
@@ -35,10 +35,10 @@
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" Name="Categories" Style="{DynamicResource cmbBoxStyle}" ItemsSource="{Binding CategoryItems}" DisplayMemberPath="Name">
+                <ComboBox Grid.Column="0" Name="SelectCat" Style="{DynamicResource cmbBoxStyle}" ItemsSource="{Binding CategoryItems}" DisplayMemberPath="Name">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=Categories, Path=SelectedItem}"/>
+                            <i:InvokeCommandAction Command="{Binding SelectCatCommand}" CommandParameter="{Binding ElementName=SelectCat, Path=SelectedItem}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
@@ -50,7 +50,13 @@
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <ListBox Grid.Column="0" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Definition.Name"/>
+                <ListBox Grid.Column="0" Name="SelectParam" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Name">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectParamCommand}" CommandParameter="{Binding ElementName=SelectParam, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListBox>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -58,25 +64,30 @@
                         <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="1" Style="{DynamicResource btnStyleWide}" Content="&gt;"/>
-                    <Button Grid.Row="2" Style="{DynamicResource btnStyleWide}" Content="&lt;"/>
+                    <Button Grid.Row="1" Style="{DynamicResource btnStyleWide}" Content="&gt;" Command="{Binding AddCommand}"/>
+                    <Button Grid.Row="2" Style="{DynamicResource btnStyleWide}" Content="&lt;" Command="{Binding RemoveCommand}"/>
                 </Grid>
-                <ListView Grid.Column="2" Name="ParameterMap">
+                <ListView Grid.Column="2" Name="ParameterMap" ItemsSource="{Binding ExcelItems}">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                                <GridViewColumn Header="Cells" DisplayMemberBinding="{Binding Cells}"/>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding RevitParam.Name}"/>
+                                <GridViewColumn Header="Cells" DisplayMemberBinding="{Binding ExcelRange.Cells}"/>
                                 <GridViewColumn Header="Select" Width="50">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Pick" Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=ParameterMap, Path=SelectedItem}"/>
+                                            <Button Content="Range" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
-                                </GridViewColumn> 
+                                </GridViewColumn>
                             </GridView.Columns>
                         </GridView>
                     </ListView.View>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectExcelCommand}" CommandParameter="{Binding ElementName=ParameterMap, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </ListView>
             </Grid>
             <Grid Grid.Row="3" Style="{DynamicResource gridStyle}">

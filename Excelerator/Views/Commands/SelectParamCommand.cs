@@ -1,11 +1,11 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
+    using Gensler.Revit.Excelerator.Models;
     using System;
-    using System.Collections.ObjectModel;
     using System.Windows.Input;
 
-    class SelectCommand : ICommand
+    class SelectParamCommand : ICommand
     {
         MainWindowViewModel _viewModel;
 
@@ -18,14 +18,12 @@
 
         public void Execute(object parameter)
         {
-            var category = parameter as Category;           
-            var paramList = ScheduleFacade.GetParametersInCategory(RevitCommand.m_Document, category);
-            var paramItems = new ObservableCollection<Parameter>(paramList);
+            var selectedParam = parameter as ParamField;
 
-            _viewModel.ParameterItems = paramItems;
+            _viewModel.SelectedParameter = selectedParam;
         }
 
-        public SelectCommand(MainWindowViewModel viewModel)
+        public SelectParamCommand(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }
