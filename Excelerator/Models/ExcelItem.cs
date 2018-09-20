@@ -3,20 +3,30 @@
     using Microsoft.Office.Interop.Excel;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using Revit = Autodesk.Revit.DB;
 
     class ExcelItem : INotifyPropertyChanged
     {
-        ParamField _revitParam;
-        Range _excelRange;
-        List<object> _values;
-        int _count;
+        private ParamField _revitParam;
+        private Range _excelRange;
+        private List<object> _values;
+        private int _count;
+        private bool _isActive;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsActive)));
+            }
+        }
+
         public List<object> Values
         {
-            get { return _values; }
+            get => _values;
             set
             {
                 _values = value;
@@ -26,7 +36,7 @@
 
         public int Count
         {
-            get { return _count; }
+            get => _count;
             set
             {
                 _count = value;
@@ -36,7 +46,7 @@
 
         public ParamField RevitParam
         {
-            get { return _revitParam; }
+            get => _revitParam;
             set
             {
                 _revitParam = value;
@@ -46,7 +56,7 @@
 
         public Range ExcelRange
         {
-            get { return _excelRange; }
+            get => _excelRange;
             set
             {
                 _excelRange = value;
@@ -60,15 +70,15 @@
             PropertyChanged?.Invoke(this, e);
         }
 
-        List<object> GetCellValues(Range range)
+        private List<object> GetCellValues(Range range)
         {
-            object[,] values = (object[,])range.Value2;
+            var values = (object[,])range.Value2;
             var rows = values.GetLength(0);
             var cols = values.GetLength(1);
             var items = new List<object>();
 
-            for (int i = 1; i <= rows; ++i)
-                for (int j = 1; j <= cols; ++j)
+            for (var i = 1; i <= rows; ++i)
+                for (var j = 1; j <= cols; ++j)
                     items.Add(values[i, j]);
 
             Count = items.Count;

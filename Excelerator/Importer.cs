@@ -1,16 +1,15 @@
 ﻿namespace Gensler.Revit.Excelerator
 {
     using Autodesk.Revit.DB;
-    using Gensler.Revit.Excelerator.Models;
+    using Models;
     using Microsoft.Office.Interop.Excel;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     class Importer
     {
-        Application _excelApp;
-        ExcelItem _excelItem;
+        private readonly Application _excelApp;
+        private ExcelItem _excelItem;
         
 
         public Importer(string path)
@@ -21,17 +20,8 @@
         public void SelectData(ExcelItem item)
         {
             _excelItem = item;
-
             _excelApp.Visible = true;
             _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
-        }
-
-        public void OnSheetSelectionChanged(object sheet, Range range)
-        {
-            _excelItem.ExcelRange = range;
-
-            _excelApp.Visible = false;
-            _excelApp.SheetSelectionChange -= OnSheetSelectionChanged;
         }
 
         public ViewSchedule GetNewSchedule(Document document, Category category)
@@ -41,27 +31,20 @@
             return ScheduleFacade.GetNewSchedule(document, category.Id);
         }
 
-        public IList<SchedulableField> GetSchedulableFields(Document document, ViewSchedule schedule)
+        public IList<SchedulableField> GetSchedulableFields(Document document, Category category)
         {
-            var schedFields = schedule.Definition.GetSchedulableFields();
+            var schedFields = ScheduleFacade.GetSchedulableFields(document, category);
 
             return schedFields;
         }
 
-        public SchedulableField GetSchedulableFields(Document document, ViewSchedule schedule, string name)
-        {
-            var schedFields = schedule.Definition.GetSchedulableFields();
-
-            return schedFields.FirstOrDefault(x => x.GetName(document) == name);
-        }
-
-        public void AddScheduleFields(Document document, ViewSchedule schedule, IEnumerable fields)
+        public void AddFieldsToSchedule(Document document, ViewSchedule schedule, IEnumerable fields)
         {
             foreach (SchedulableField field in fields)
                 ScheduleFacade.AddScheduleField(document, schedule, field);
         }
 
-        public void AddScheduleKeys(Document document, ViewSchedule schedule, int count)
+        public void AddKeysToSchedule(Document document, ViewSchedule schedule, int count)
         {
             for (int i = 0; i < count; ++i)
                 ScheduleFacade.AddScheduleKey(document, schedule);
@@ -70,12 +53,12 @@
         public void AddDataToKeys(Document document, ViewSchedule schedule, ICollection<ExcelItem> excelItems, int numRows, int numCols)
         {
             var keys = ScheduleFacade.GetScheduleKeys(document, schedule);
-            var dataRows = ColumnsToRows(excelItems, numRows, excelItems.Count);
+            var dataRows = ColumnsToRows(excelItems, numRows);
 
             ScheduleFacade.AddDataToKeys(document, dataRows, keys);
         }
 
-        List<Dictionary<string, string>> ColumnsToRows(ICollection<ExcelItem> excelItems, int numRows, int numCols)
+        List<Dictionary<string, string>> ColumnsToRows(ICollection<ExcelItem> excelItems, int numRows)
         {
             var dataRows = new List<Dictionary<string, string>>();
 
@@ -93,6 +76,13 @@
             }
 
             return dataRows;
+        }
+
+        private void OnSheetSelectionChanged(object sheet, Range range)
+        {
+            _excelItem.ExcelRange = range;
+            _excelApp.Visible = false;
+            _excelApp.SheetSelectionChange -= OnSheetSelectionChanged;
         }
     }
 }

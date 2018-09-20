@@ -36,7 +36,7 @@
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" Name="SelectCat" Style="{DynamicResource cmbBoxStyle}" ItemsSource="{Binding CategoryItems}" DisplayMemberPath="Name">
+                <ComboBox Grid.Column="0" Name="SelectCat"  Style="{DynamicResource cmbBoxStyle}" ItemsSource="{Binding CategoryItems}" DisplayMemberPath="Name" Text="Category">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding SelectCatCommand}" CommandParameter="{Binding ElementName=SelectCat, Path=SelectedItem}"/>
@@ -72,12 +72,29 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding RevitParam.Name}"/>
-                                <GridViewColumn Header="Cells" DisplayMemberBinding="{Binding ExcelRange.Cells}"/>
-                                <GridViewColumn Header="Select" Width="50">
+                                <GridViewColumn HeaderTemplate="{DynamicResource NameHeader}"  CellTemplate="{DynamicResource NameCell}" />
+                                <GridViewColumn HeaderTemplate="{DynamicResource SheetHeader}">
+                                    <GridViewColumn.DisplayMemberBinding>
+                                        <Binding Path="ExcelRange">
+                                            <Binding.Converter>
+                                                <local:WorksheetConverter></local:WorksheetConverter>
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </GridViewColumn.DisplayMemberBinding>
+                                </GridViewColumn>
+                                <GridViewColumn HeaderTemplate="{DynamicResource RangeHeader}" >
+                                    <GridViewColumn.DisplayMemberBinding>
+                                        <Binding Path="ExcelRange">
+                                            <Binding.Converter>
+                                                <local:AddressConverter></local:AddressConverter>
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </GridViewColumn.DisplayMemberBinding>
+                                </GridViewColumn>
+                                <GridViewColumn HeaderTemplate="{DynamicResource SelectHeader}">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Range" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}" />
+                                            <Button Content="Range" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

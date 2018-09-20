@@ -7,7 +7,7 @@
 
     class RunCommand : ICommand
     {
-        MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
@@ -19,7 +19,7 @@
         public void Execute(object parameter)
         {
             var window = parameter as MainWindow;
-            var document = RevitCommand._Document;
+            var document = RevitCommand.RevitDocument;
             var category = _viewModel.SelectedCategory;
             var importer = _viewModel.Importer;
             var schedule = importer.GetNewSchedule(document, category);
@@ -28,11 +28,11 @@
             foreach (var item in _viewModel.ExcelItems)
                 fields.Add(item.RevitParam.Field);
 
-            importer.AddScheduleFields(document, schedule, fields);
-            importer.AddScheduleKeys(document, schedule, _viewModel.NumRows);
+            importer.AddFieldsToSchedule(document, schedule, fields);
+            importer.AddKeysToSchedule(document, schedule, _viewModel.NumRows);
             importer.AddDataToKeys(document, schedule, _viewModel.ExcelItems, _viewModel.NumRows, _viewModel.NumCols);
 
-            window.Close();
+            window?.Close();
         }
 
         public RunCommand(MainWindowViewModel viewModel)

@@ -1,14 +1,14 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
-    using Gensler.Revit.Excelerator.Models;
+    using Models;
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
 
     class SelectCatCommand : ICommand
     {
-        MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
@@ -20,18 +20,15 @@
         public void Execute(object parameter)
         {
             var category = parameter as Category;
-            var document = RevitCommand._Document;
+            var document = RevitCommand.RevitDocument;
             var importer = _viewModel.Importer;
+            var paramItems = _viewModel.ParameterItems;
 
-            //var paramList = ScheduleFacade.GetParametersInCategory(document, category);
-            var schedule = importer.GetNewSchedule(document, category);
-            var fields = importer.GetSchedulableFields(document, schedule);
-            var paramItems = new ObservableCollection<ParamField>();
+            var fields = importer.GetSchedulableFields(document, category);           
 
             foreach (var field in fields)
                 paramItems.Add(new ParamField { Name = field.GetName(document), Field = field });
 
-            _viewModel.ParameterItems = paramItems;
             _viewModel.SelectedCategory = category;
         }
 

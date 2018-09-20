@@ -6,7 +6,7 @@
 
     class FileCommand : ICommand
     {
-        MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 

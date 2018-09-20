@@ -30,6 +30,19 @@
             return schedule;
         }
 
+        public static IList<SchedulableField> GetSchedulableFields(Document document, Category category)
+        {
+            var transaction = new Transaction(document, "Create Key Schedule");
+            transaction.Start();
+
+            var schedule = ViewSchedule.CreateKeySchedule(document, category.Id);
+            var schedFields = schedule.Definition.GetSchedulableFields();
+
+            transaction.RollBack();
+
+            return schedFields;
+        }
+
         public static void AddScheduleKey(Document document, ViewSchedule schedule)
         {
             var transaction = new Transaction(document, "Add Row");

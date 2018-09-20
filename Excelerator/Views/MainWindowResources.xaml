@@ -54,6 +54,8 @@
         <Setter Property="Margin" Value="10"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="IsEditable" Value="True"/>
+        <Setter Property="IsReadOnly" Value="True"/>
     </Style>
     
 
@@ -97,5 +99,48 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!--ListView Style-->
+    <!--<Style x:Key="BlueBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#FF6B93CC" />
+        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="CornerRadius" Value="2"/>
+        <Setter Property="Padding" Value="2"/>
+    </Style>
+    <LinearGradientBrush x:Key="SubtleBlue" EndPoint="0.476,-0.09" StartPoint="0.476,1.363">
+        <GradientStop Color="#FF7A8EEC" Offset="0.013"/>
+        <GradientStop Color="#FF6B93CC" Offset="1"/>
+        <GradientStop Color="#FFF7F6F7" Offset="0.54"/>
+        <GradientStop Color="#FFEDEEF4" Offset="0.46"/>
+    </LinearGradientBrush>-->
+    <Style x:Key="WideHeaderText" TargetType="TextBlock">
+        <!--<Setter Property="FontSize" Value="14" />-->
+        <!--<Setter Property="FontWeight" Value="Bold" />-->
+        <!--<Setter Property="Background" Value="{StaticResource SubtleBlue}" />-->
+        <!--<Setter Property="Foreground" Value="Black" />-->
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Width" Value="100"></Setter>
+    </Style>
+    <Style x:Key="NarHeaderText" TargetType="TextBlock">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Width" Value="45"></Setter>
+    </Style>
+    <DataTemplate x:Key="NameHeader">
+        <!--<Border Style="{StaticResource BlueBorder}">-->
+            <TextBlock Text="Name" Style="{StaticResource WideHeaderText}"/>
+        <!--</Border>-->
+    </DataTemplate>
+    <DataTemplate x:Key="SheetHeader">
+        <TextBlock Text="Sheet" Style="{StaticResource WideHeaderText}"/>
+    </DataTemplate>
+    <DataTemplate x:Key="RangeHeader">
+        <TextBlock Text="Range" Style="{StaticResource NarHeaderText}"/>
+    </DataTemplate>
+    <DataTemplate x:Key="SelectHeader">
+        <TextBlock Text="Select" Style="{StaticResource NarHeaderText}"/>
+    </DataTemplate>
+    <DataTemplate x:Key="NameCell">
+        <TextBlock Text="{Binding RevitParam.Name}" />
+    </DataTemplate>
 
 </ResourceDictionary>

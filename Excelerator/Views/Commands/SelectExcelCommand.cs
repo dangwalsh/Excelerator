@@ -1,12 +1,12 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
-    using Gensler.Revit.Excelerator.Models;
+    using Models;
     using System;
     using System.Windows.Input;
 
     class SelectExcelCommand : ICommand
     {
-        MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 

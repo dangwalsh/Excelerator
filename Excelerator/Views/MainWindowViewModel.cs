@@ -1,105 +1,89 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
-    using Gensler.Revit.Excelerator.Models;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
 
+    using Models;
+    using System;
+    using System.Collections.Specialized;
+
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        Importer _importer;
-
-        string _excelPath;
-        Category _selectedCategory;
-        ParamField _selectedParameter;
-        ExcelItem _selectedExcelItem;
-        int _numRows;
-        int _numCols;
-       
-        ObservableCollection<Category> _categoryItems;
-        ObservableCollection<ParamField> _parameterItems;
-        ObservableCollection<ExcelItem> _excelItems;
+        private string _excelPath;
+        private Category _selectedCategory;
+        private ParamField _selectedParameter;
+        private ExcelItem _selectedExcelItem;
+        private ObservableCollection<Category> _categoryItems;
+        private ObservableCollection<ParamField> _parameterItems;
+        private ObservableCollection<ExcelItem> _excelItems;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public Importer Importer { get; private set; }
 
-        public Importer Importer
-        {
-            get { return _importer; }
-        }
-
-        public int NumRows { get { return _numRows; } set { _numRows = value; } }
-        public int NumCols { get { return _numCols; } set { _numCols = value; } }
+        public int NumRows { get; set; }
+        public int NumCols { get; set; }
 
         public string ExcelPath
         {
-            get { return _excelPath; }
+            get => _excelPath;
             set
             {
                 _excelPath = value;
-                _importer = new Importer(value);
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExcelPath))); 
+                Importer = new Importer(value);
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(ExcelPath))); 
             }
         }
 
         public Category SelectedCategory
         {
-            get { return _selectedCategory; }
+            get => _selectedCategory;
             set
             {
                 _selectedCategory = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedCategory)));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedCategory)));
             }
         }
 
         public ParamField SelectedParameter
         {
-            get { return _selectedParameter; }
+            get => _selectedParameter;
             set
             {
                 _selectedParameter = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedParameter)));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedParameter)));
             }
         }
 
         public ExcelItem SelectedExcelItem
         {
-            get { return _selectedExcelItem; }
+            get => _selectedExcelItem;
             set
             {
                 _selectedExcelItem = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedExcelItem)));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedExcelItem)));
             }
         }
 
         public ObservableCollection<Category> CategoryItems
         {
-            get
-            {
-                if (_categoryItems == null)
-                    _categoryItems = new ObservableCollection<Category>();
-                return _categoryItems;
-            }
+            get => _categoryItems;
             set
             {
                 _categoryItems = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CategoryItems)));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(CategoryItems)));
             }
         }
 
         public ObservableCollection<ParamField> ParameterItems
         {
-            get
-            {
-                if (_parameterItems == null)
-                    _parameterItems = new ObservableCollection<ParamField>();
-                return _parameterItems;
-            }
+            get => _parameterItems ?? (_parameterItems = new ObservableCollection<ParamField>());
             set
             {
                 _parameterItems = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(ParameterItems)));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(ParameterItems)));
             }
         }
 
@@ -107,17 +91,31 @@
         {
             get
             {
-                if (_excelItems == null)
-                    _excelItems = new ObservableCollection<ExcelItem>();
+                if (_excelItems != null) return _excelItems;
+
+                _excelItems = new ObservableCollection<ExcelItem>();
+                _excelItems.CollectionChanged += ExcelItemsCollectionChanged;
+
                 return _excelItems;
             }
             set
             {
                 _excelItems = value;
-                _numRows = _excelItems.Max(x => x.Count);
-                _numCols = _excelItems.Count;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExcelItems)));
+                NumRows = _excelItems.Max(x => x.Count);
+                NumCols = _excelItems.Count;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(ExcelItems)));
             }
+        }
+
+        private void ExcelItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (ExcelItem item in e.NewItems)
+                    item.PropertyChanged += OnPropertyChanged;
+
+            if (e.OldItems != null)
+                foreach (ExcelItem item in e.OldItems)
+                    item.PropertyChanged -= OnPropertyChanged;
         }
 
         public FileCommand FileCommand { get; set; }
@@ -148,15 +146,15 @@
             RunCommand = new RunCommand(this);
 
             var categories = new ObservableCollection<Category>();
-            foreach (Category cat in RevitCommand._Document.Settings.Categories)
+            foreach (Category cat in RevitCommand.RevitDocument.Settings.Categories)
                 categories.Add(cat);
 
             CategoryItems = categories;
         }
 
-        void OnPropertyChanged(PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, e);
+            PropertyChanged?.Invoke(sender, e);
         }
     }
 }

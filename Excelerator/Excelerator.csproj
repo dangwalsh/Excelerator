@@ -80,17 +80,12 @@
     <Compile Include="Views\Commands\SelectExcelCommand.cs" />
     <Compile Include="Views\Commands\SelectParamCommand.cs" />
     <Compile Include="Views\Commands\SelectCatCommand.cs" />
-    <Compile Include="Views\ItemsChangeObservableCollection.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindowViewModel.cs" />
-    <Compile Include="Views\TestWindow1.xaml.cs">
-      <DependentUpon>TestWindow1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TestWindow2.xaml.cs">
-      <DependentUpon>TestWindow2.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\AddressConverter.cs" />
+    <Compile Include="Views\WorksheetConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Excelerator.addin">
@@ -109,22 +104,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindowResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Resources\ExpanderButtonTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Resources\ExpanderTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TestWindow1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TestWindow2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

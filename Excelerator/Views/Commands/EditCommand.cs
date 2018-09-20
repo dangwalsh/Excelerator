@@ -6,7 +6,7 @@
 
     class EditCommand : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
