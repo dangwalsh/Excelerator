@@ -91,10 +91,11 @@
                                         </Binding>
                                     </GridViewColumn.DisplayMemberBinding>
                                 </GridViewColumn>
-                                <GridViewColumn HeaderTemplate="{DynamicResource SelectHeader}">
+                                <GridViewColumn HeaderTemplate="{DynamicResource SelectHeader}" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Range" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}"/>
+                                            <!--<Button Style="{DynamicResource btnStyleFixed}" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}"/>-->
+                                            <Button Style="{DynamicResource btnStyleFixed}" Command="{Binding EditCommand}" IsEnabled="{Binding IsActive}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

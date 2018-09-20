@@ -10,7 +10,6 @@
     {
         private readonly Application _excelApp;
         private ExcelItem _excelItem;
-        
 
         public Importer(string path)
         {
@@ -58,7 +57,7 @@
             ScheduleFacade.AddDataToKeys(document, dataRows, keys);
         }
 
-        List<Dictionary<string, string>> ColumnsToRows(ICollection<ExcelItem> excelItems, int numRows)
+        private List<Dictionary<string, string>> ColumnsToRows(ICollection<ExcelItem> excelItems, int numRows)
         {
             var dataRows = new List<Dictionary<string, string>>();
 

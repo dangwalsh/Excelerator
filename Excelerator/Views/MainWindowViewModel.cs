@@ -62,7 +62,10 @@
             get => _selectedExcelItem;
             set
             {
+                if (_selectedExcelItem != null)
+                    _selectedExcelItem.IsActive = false;
                 _selectedExcelItem = value;
+                _selectedExcelItem.IsActive = true;
                 OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedExcelItem)));
             }
         }

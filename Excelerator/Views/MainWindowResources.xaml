@@ -48,6 +48,11 @@
         <Setter Property="Margin" Value="5"/>
     </Style>
 
+    <Style x:Key="btnStyleFixed" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+    </Style>
+
 
     <!--ComboBox Style-->
     <Style x:Key="cmbBoxStyle" TargetType="{x:Type ComboBox}">
@@ -119,11 +124,15 @@
         <!--<Setter Property="Background" Value="{StaticResource SubtleBlue}" />-->
         <!--<Setter Property="Foreground" Value="Black" />-->
         <Setter Property="Padding" Value="2" />
-        <Setter Property="Width" Value="100"></Setter>
+        <Setter Property="Width" Value="135"></Setter>
+    </Style>
+    <Style x:Key="MedHeaderText" TargetType="TextBlock">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Width" Value="65"></Setter>
     </Style>
     <Style x:Key="NarHeaderText" TargetType="TextBlock">
         <Setter Property="Padding" Value="2" />
-        <Setter Property="Width" Value="45"></Setter>
+        <Setter Property="Width" Value="20"></Setter>
     </Style>
     <DataTemplate x:Key="NameHeader">
         <!--<Border Style="{StaticResource BlueBorder}">-->
@@ -131,13 +140,13 @@
         <!--</Border>-->
     </DataTemplate>
     <DataTemplate x:Key="SheetHeader">
-        <TextBlock Text="Sheet" Style="{StaticResource WideHeaderText}"/>
+        <TextBlock Text="Sheet" Style="{StaticResource MedHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="RangeHeader">
-        <TextBlock Text="Range" Style="{StaticResource NarHeaderText}"/>
+        <TextBlock Text="Range" Style="{StaticResource MedHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="SelectHeader">
-        <TextBlock Text="Select" Style="{StaticResource NarHeaderText}"/>
+        <TextBlock Text="Sel" Style="{StaticResource NarHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="NameCell">
         <TextBlock Text="{Binding RevitParam.Name}" />
