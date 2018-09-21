@@ -1,11 +1,26 @@
-﻿namespace Gensler.Revit.Excelerator
+﻿using System;
+
+namespace Gensler.Revit.Excelerator
 {
     using Autodesk.Revit.DB;
+    using Autodesk.Revit.Exceptions;
     using System.Collections.Generic;
     using System.Linq;
 
     static class ScheduleFacade
     {
+        public static List<Category> GetCategories()
+        {
+            var document = RevitCommand.RevitDocument;
+            var revitCats = document.Settings.Categories;
+
+            var catList = new List<Category>();
+            foreach (Category revitCat in revitCats)
+                catList.Add(revitCat);
+                
+            return catList;
+        }
+
         public static void AddScheduleField(Document document, ViewSchedule schedule, SchedulableField field)
         {
             if (IsAlreadyAdded(schedule, field)) return;
@@ -14,6 +29,17 @@
             transaction.Start();
 
             schedule.Definition.AddField(field);
+
+            transaction.Commit();
+        }
+
+        public static void HideField(Document document, ViewSchedule schedule, int fieldIndex)
+        {
+            var transaction = new Transaction(document, "Add Field");
+            transaction.Start();
+
+            var field = schedule.Definition.GetField(fieldIndex);
+            field.IsHidden = true;
 
             transaction.Commit();
         }
@@ -35,12 +61,28 @@
             var transaction = new Transaction(document, "Create Key Schedule");
             transaction.Start();
 
-            var schedule = ViewSchedule.CreateKeySchedule(document, category.Id);
+            ViewSchedule schedule = null;
+            try
+            {
+                schedule = ViewSchedule.CreateKeySchedule(document, category.Id);
+            }
+            catch (ArgumentException)
+            {
+
+            }
+
+            if (schedule == null)
+            {
+                transaction.RollBack();
+                return null;
+            }
+
             var schedFields = schedule.Definition.GetSchedulableFields();
 
             transaction.RollBack();
 
             return schedFields;
+
         }
 
         public static void AddScheduleKey(Document document, ViewSchedule schedule)
@@ -81,21 +123,6 @@
             }
 
             transaction.Commit();
-        }
-
-        public static List<Parameter> GetParametersInCategory(Document document, Category category)
-        {
-            var element = new FilteredElementCollector(document)
-                .OfCategoryId(category.Id)
-                .FirstElement();
-
-            if (element == null) return null;
-
-            var parameters = new List<Parameter>();
-            foreach (Parameter parameter in element.Parameters)
-                parameters.Add(parameter);
-
-            return parameters;
         }
 
         static bool IsAlreadyAdded(ViewSchedule schedule, SchedulableField field)

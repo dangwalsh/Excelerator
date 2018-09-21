@@ -57,7 +57,7 @@
     <!--ComboBox Style-->
     <Style x:Key="cmbBoxStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Padding" Value="6"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="IsEditable" Value="True"/>
         <Setter Property="IsReadOnly" Value="True"/>
@@ -77,13 +77,18 @@
         <Setter Property="Margin" Value="10"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Text" Value="Choose Properties on the left and assign them to Excel columns on the right.  Then press 'Ok' to create a schedule."/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="DarkGray"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
 
     <!--TextBox Style-->
     <Style x:Key="txtBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Padding" Value="6"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Style.Resources>
             <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
@@ -106,25 +111,9 @@
     </Style>
 
     <!--ListView Style-->
-    <!--<Style x:Key="BlueBorder" TargetType="Border">
-        <Setter Property="BorderBrush" Value="#FF6B93CC" />
-        <Setter Property="BorderThickness" Value="4"/>
-        <Setter Property="CornerRadius" Value="2"/>
-        <Setter Property="Padding" Value="2"/>
-    </Style>
-    <LinearGradientBrush x:Key="SubtleBlue" EndPoint="0.476,-0.09" StartPoint="0.476,1.363">
-        <GradientStop Color="#FF7A8EEC" Offset="0.013"/>
-        <GradientStop Color="#FF6B93CC" Offset="1"/>
-        <GradientStop Color="#FFF7F6F7" Offset="0.54"/>
-        <GradientStop Color="#FFEDEEF4" Offset="0.46"/>
-    </LinearGradientBrush>-->
     <Style x:Key="WideHeaderText" TargetType="TextBlock">
-        <!--<Setter Property="FontSize" Value="14" />-->
-        <!--<Setter Property="FontWeight" Value="Bold" />-->
-        <!--<Setter Property="Background" Value="{StaticResource SubtleBlue}" />-->
-        <!--<Setter Property="Foreground" Value="Black" />-->
         <Setter Property="Padding" Value="2" />
-        <Setter Property="Width" Value="135"></Setter>
+        <Setter Property="Width" Value="130"></Setter>
     </Style>
     <Style x:Key="MedHeaderText" TargetType="TextBlock">
         <Setter Property="Padding" Value="2" />
@@ -135,9 +124,7 @@
         <Setter Property="Width" Value="20"></Setter>
     </Style>
     <DataTemplate x:Key="NameHeader">
-        <!--<Border Style="{StaticResource BlueBorder}">-->
-            <TextBlock Text="Name" Style="{StaticResource WideHeaderText}"/>
-        <!--</Border>-->
+        <TextBlock Text="Name" Style="{StaticResource WideHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="SheetHeader">
         <TextBlock Text="Sheet" Style="{StaticResource MedHeaderText}"/>

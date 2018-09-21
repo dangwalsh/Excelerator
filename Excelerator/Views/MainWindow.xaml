@@ -13,9 +13,9 @@
     </Window.Resources>
     <Grid>
         <Grid.Resources>
-            <local:MainWindowViewModel x:Key="windowViewModel"/>
+            <local:MainWindowViewModel x:Key="WindowViewModel"/>
         </Grid.Resources>
-        <Grid  Name="MasterGrid" Style="{DynamicResource gridStyle}" DataContext="{Binding Source={StaticResource windowViewModel}}">
+        <Grid Name="MasterGrid" Style="{DynamicResource gridStyle}" DataContext="{Binding Source={StaticResource WindowViewModel}}">
             <Grid.RowDefinitions>
                 <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
                 <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
@@ -27,10 +27,10 @@
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFixed}"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Style="{DynamicResource txtBoxStyle}" Text="{Binding ExcelPath}"/>
+                <TextBox Grid.Column="0" Style="{DynamicResource txtBoxStyle}" Text="{Binding ExcelPath}" />
                 <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="File" Command="{Binding FileCommand}"/>
             </Grid>
-            <Grid Grid.Row="1" Style="{DynamicResource gridStyle}">
+            <Grid Grid.Row="1" Style="{DynamicResource gridStyle}" IsEnabled="{Binding IsLoaded}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{DynamicResource colStyleMinMax}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
@@ -45,13 +45,13 @@
                 </ComboBox>
                 <Label Grid.Column="2" Style="{DynamicResource labelStyle}" Content="Mapping"/>
             </Grid>
-            <Grid Grid.Row="2" Style="{DynamicResource gridStyle}">
+            <Grid Grid.Row="2" Style="{DynamicResource gridStyle}" IsEnabled="{Binding IsLoaded}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{DynamicResource colStyleMinMax}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <ListBox Grid.Column="0" Name="SelectParam" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Name">
+                <ListBox Grid.Column="0" Name="SelectParam" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Name"  BorderThickness="0">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding SelectParamCommand}" CommandParameter="{Binding ElementName=SelectParam, Path=SelectedItem}"/>
@@ -68,7 +68,7 @@
                     <Button Grid.Row="1" Style="{DynamicResource btnStyleWide}" Content="&gt;" Command="{Binding AddCommand}"/>
                     <Button Grid.Row="2" Style="{DynamicResource btnStyleWide}" Content="&lt;" Command="{Binding RemoveCommand}"/>
                 </Grid>
-                <ListView Grid.Column="2" Name="ParameterMap" ItemsSource="{Binding ExcelItems}">
+                <ListView Grid.Column="2" Name="ParameterMap" ItemsSource="{Binding ExcelItems}" BorderThickness="0">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -94,8 +94,7 @@
                                 <GridViewColumn HeaderTemplate="{DynamicResource SelectHeader}" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <!--<Button Style="{DynamicResource btnStyleFixed}" DataContext="{StaticResource windowViewModel}" Command="{Binding EditCommand}"/>-->
-                                            <Button Style="{DynamicResource btnStyleFixed}" Command="{Binding EditCommand}" IsEnabled="{Binding IsActive}"/>
+                                            <Button Style="{DynamicResource btnStyleFixed}" Command="{Binding EditCommand, Source={StaticResource WindowViewModel}}" IsEnabled="{Binding IsActive}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -109,12 +108,12 @@
                     </i:Interaction.Triggers>
                 </ListView>
             </Grid>
-            <Grid Grid.Row="3" Style="{DynamicResource gridStyle}">
+            <Grid Name="RowGrid" Grid.Row="3" Style="{DynamicResource gridStyle}" IsEnabled="{Binding IsLoaded}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFixed}"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Style="{DynamicResource textBlockStyle}" />
+                <TextBlock Grid.Column="0" Style="{DynamicResource textBlockStyle}" IsEnabled="{Binding ElementName=RowGrid, Path=IsEnabled}"/>
                 <Button Grid.Column="1" Style="{DynamicResource btnStyle}" Content="Ok" Command="{Binding RunCommand}" CommandParameter="{Binding ElementName=ThisWindow}"/>
             </Grid>
         </Grid>

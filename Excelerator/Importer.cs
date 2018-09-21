@@ -1,4 +1,6 @@
-﻿namespace Gensler.Revit.Excelerator
+﻿using System.Linq;
+
+namespace Gensler.Revit.Excelerator
 {
     using Autodesk.Revit.DB;
     using Models;
@@ -16,6 +18,7 @@
             _excelApp = new Application();
             _excelApp.Workbooks.Open(path);
         }
+
         public void SelectData(ExcelItem item)
         {
             _excelItem = item;
@@ -30,9 +33,9 @@
             return ScheduleFacade.GetNewSchedule(document, category.Id);
         }
 
-        public IList<SchedulableField> GetSchedulableFields(Document document, Category category)
+        public IEnumerable<SchedulableField> GetSchedulableFields(Document document, Category category)
         {
-            var schedFields = ScheduleFacade.GetSchedulableFields(document, category);
+            var schedFields = ScheduleFacade.GetSchedulableFields(document, category)?.Where(x => x.FieldType == ScheduleFieldType.Instance);
 
             return schedFields;
         }
@@ -41,6 +44,11 @@
         {
             foreach (SchedulableField field in fields)
                 ScheduleFacade.AddScheduleField(document, schedule, field);
+        }
+
+        public void HideScheduleKeyName(Document document, ViewSchedule schedule)
+        {
+            ScheduleFacade.HideField(document, schedule, 0);
         }
 
         public void AddKeysToSchedule(Document document, ViewSchedule schedule, int count)

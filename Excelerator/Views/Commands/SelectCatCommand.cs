@@ -1,9 +1,11 @@
-﻿namespace Gensler.Revit.Excelerator.Views
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+
+namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
     using Models;
     using System;
-    using System.Collections.ObjectModel;
     using System.Windows.Input;
 
     class SelectCatCommand : ICommand
@@ -22,14 +24,16 @@
             var category = parameter as Category;
             var document = RevitCommand.RevitDocument;
             var importer = _viewModel.Importer;
-            var paramItems = _viewModel.ParameterItems;
+            
+            var fields = importer.GetSchedulableFields(document, category);
+            var paramItems = new ObservableCollection<ParamField>();
 
-            var fields = importer.GetSchedulableFields(document, category);           
-
-            foreach (var field in fields)
-                paramItems.Add(new ParamField { Name = field.GetName(document), Field = field });
+            if (fields != null)
+                foreach (var field in fields.OrderBy(x => x.GetName(document)))
+                    paramItems.Add(new ParamField {Name = field.GetName(document), Field = field});
 
             _viewModel.SelectedCategory = category;
+            _viewModel.ParameterItems = paramItems;
         }
 
         public SelectCatCommand(MainWindowViewModel viewModel)

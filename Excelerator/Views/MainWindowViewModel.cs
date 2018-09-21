@@ -1,16 +1,17 @@
-﻿namespace Gensler.Revit.Excelerator.Views
+﻿using System.Collections.Generic;
+
+namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
-
-    using Models;
-    using System;
     using System.Collections.Specialized;
+    using Models;    
 
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        private bool _isLoaded;
         private string _excelPath;
         private Category _selectedCategory;
         private ParamField _selectedParameter;
@@ -22,9 +23,18 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Importer Importer { get; private set; }
-
         public int NumRows { get; set; }
         public int NumCols { get; set; }
+
+        public bool IsLoaded
+        {
+            get => _isLoaded;
+            set
+            {
+                _isLoaded = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(IsLoaded)));
+            }
+        }
 
         public string ExcelPath
         {
@@ -148,8 +158,9 @@
             EditCommand = new EditCommand(this);
             RunCommand = new RunCommand(this);
 
+            var catList = ScheduleFacade.GetCategories();
             var categories = new ObservableCollection<Category>();
-            foreach (Category cat in RevitCommand.RevitDocument.Settings.Categories)
+            foreach (Category cat in catList.OrderBy(x => x.Name))
                 categories.Add(cat);
 
             CategoryItems = categories;

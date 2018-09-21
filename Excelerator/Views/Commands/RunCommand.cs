@@ -29,6 +29,7 @@
                 fields.Add(item.RevitParam.Field);
 
             importer.AddFieldsToSchedule(document, schedule, fields);
+            importer.HideScheduleKeyName(document, schedule);
             importer.AddKeysToSchedule(document, schedule, _viewModel.NumRows);
             importer.AddDataToKeys(document, schedule, _viewModel.ExcelItems, _viewModel.NumRows, _viewModel.NumCols);
 

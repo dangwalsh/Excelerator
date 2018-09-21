@@ -18,8 +18,10 @@
         public void Execute(object parameter)
         {
             var openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-                _viewModel.ExcelPath = openFileDialog.FileName;
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+
+            _viewModel.ExcelPath = openFileDialog.FileName;
+            _viewModel.IsLoaded = true;
         }
 
         public FileCommand(MainWindowViewModel viewModel)
