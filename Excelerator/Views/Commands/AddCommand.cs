@@ -18,14 +18,13 @@
         public void Execute(object parameter)
         {
             var revitParam = _viewModel.SelectedParameter;
+            if (revitParam == null) return;
+
             var excelItems = _viewModel.ExcelItems;
             var paramItems = _viewModel.ParameterItems;
 
             excelItems.Add(new ExcelItem { RevitParam = revitParam });
             paramItems.Remove(revitParam);
-
-            
-            _viewModel.NumCols++;
         }
 
         public AddCommand(MainWindowViewModel viewModel)

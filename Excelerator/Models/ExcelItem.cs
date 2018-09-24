@@ -1,4 +1,6 @@
-﻿namespace Gensler.Revit.Excelerator.Models
+﻿using System;
+
+namespace Gensler.Revit.Excelerator.Models
 {
     using Microsoft.Office.Interop.Excel;
     using System.Collections.Generic;

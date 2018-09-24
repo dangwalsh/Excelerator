@@ -1,7 +1,6 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
     using System;
-    using System.Linq;
     using System.Windows.Input;
 
     class RemoveCommand : ICommand
@@ -18,14 +17,13 @@
         public void Execute(object parameter)
         {
             var excelItem = _viewModel.SelectedExcelItem;
+            if (excelItem == null) return;
+
             var excelItems = _viewModel.ExcelItems;
             var paramItems = _viewModel.ParameterItems;
 
             excelItems.Remove(excelItem);
             paramItems.Add(excelItem.RevitParam);
-
-            _viewModel.NumRows = excelItems.Max(x => x.Count);
-            _viewModel.NumCols--;
         }
 
         public RemoveCommand(MainWindowViewModel viewModel)

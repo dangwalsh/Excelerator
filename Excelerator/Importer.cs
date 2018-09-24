@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using ArgumentOutOfRangeException = Autodesk.Revit.Exceptions.ArgumentOutOfRangeException;
 
 namespace Gensler.Revit.Excelerator
 {
@@ -76,7 +78,31 @@ namespace Gensler.Revit.Excelerator
                 foreach (var item in excelItems)
                 {
                     var name = item.RevitParam.Name;
-                    dataRow.Add(name, item.Values[i] as string);
+                    var obj = item.Values[i];
+
+                    //switch (obj)
+                    //{
+                    //    case string _:
+                    //        dataRow.Add(name, item.Values[i].ToString());
+                    //        continue;
+                    //    case double _:
+                    //        dataRow.Add(name, item.Values[i].ToString());
+                    //        continue;
+                    //    case DateTime _:
+                    //        dataRow.Add(name, item.Values[i].ToString());
+                    //        continue;
+                    //    default:
+                    //        dataRow.Add(name, "");
+                    //        break;
+                    //}
+
+                    if (obj == null)
+                    {
+                        dataRow.Add(name, "");
+                        continue;
+                    }
+                        
+                    dataRow.Add(name, item.Values[i].ToString());
                 }
 
                 dataRows.Add(dataRow);

@@ -119,7 +119,20 @@ namespace Gensler.Revit.Excelerator
 
                 foreach (Parameter p in key.Parameters)
                     if (dataRow.ContainsKey(p.Definition.Name))
-                        p.Set(dataRow[p.Definition.Name]);
+                    {
+                        var dataCell = dataRow[p.Definition.Name];
+                        var paraType = p.Definition.ParameterType;
+
+                        if (paraType is ParameterType.Text)
+                        {
+                            p.Set(dataCell);
+                            continue;
+                        }
+
+                        double.TryParse(dataCell, out var d);
+                        p.Set(d);
+                    }
+                        
             }
 
             transaction.Commit();

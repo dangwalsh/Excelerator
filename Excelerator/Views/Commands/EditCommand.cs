@@ -1,7 +1,6 @@
 ﻿namespace Gensler.Revit.Excelerator.Views
 {
     using System;
-    using System.Linq;
     using System.Windows.Input;
 
     class EditCommand : ICommand
@@ -20,7 +19,6 @@
             var excelItem = _viewModel.SelectedExcelItem;
 
             _viewModel.Importer.SelectData(excelItem);
-            _viewModel.NumRows = _viewModel.ExcelItems.Max(x => x.Count);
         }
 
         public EditCommand(MainWindowViewModel viewModel)

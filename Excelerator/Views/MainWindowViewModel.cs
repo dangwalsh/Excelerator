@@ -7,7 +7,8 @@ namespace Gensler.Revit.Excelerator.Views
     using System.ComponentModel;
     using System.Linq;
     using System.Collections.Specialized;
-    using Models;    
+    using Models;
+    using System;
 
     class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -23,8 +24,8 @@ namespace Gensler.Revit.Excelerator.Views
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Importer Importer { get; private set; }
-        public int NumRows { get; set; }
-        public int NumCols { get; set; }
+        //public int NumRows { get; set; }
+        //public int NumCols { get; set; }
 
         public bool IsLoaded
         {
@@ -74,8 +75,12 @@ namespace Gensler.Revit.Excelerator.Views
             {
                 if (_selectedExcelItem != null)
                     _selectedExcelItem.IsActive = false;
+
                 _selectedExcelItem = value;
-                _selectedExcelItem.IsActive = true;
+
+                if (_selectedExcelItem != null)
+                    _selectedExcelItem.IsActive = true;
+
                 OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedExcelItem)));
             }
         }
@@ -92,7 +97,7 @@ namespace Gensler.Revit.Excelerator.Views
 
         public ObservableCollection<ParamField> ParameterItems
         {
-            get => _parameterItems ?? (_parameterItems = new ObservableCollection<ParamField>());
+            get => _parameterItems;
             set
             {
                 _parameterItems = value;
@@ -102,20 +107,11 @@ namespace Gensler.Revit.Excelerator.Views
 
         public ObservableCollection<ExcelItem> ExcelItems
         {
-            get
-            {
-                if (_excelItems != null) return _excelItems;
-
-                _excelItems = new ObservableCollection<ExcelItem>();
-                _excelItems.CollectionChanged += ExcelItemsCollectionChanged;
-
-                return _excelItems;
-            }
+            get => _excelItems;
             set
             {
                 _excelItems = value;
-                NumRows = _excelItems.Max(x => x.Count);
-                NumCols = _excelItems.Count;
+                _excelItems.CollectionChanged += ExcelItemsCollectionChanged;
                 OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(ExcelItems)));
             }
         }
@@ -123,12 +119,12 @@ namespace Gensler.Revit.Excelerator.Views
         private void ExcelItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (ExcelItem item in e.NewItems)
-                    item.PropertyChanged += OnPropertyChanged;
+                foreach (ExcelItem newItem in e.NewItems)
+                    newItem.PropertyChanged += OnPropertyChanged;
 
             if (e.OldItems != null)
-                foreach (ExcelItem item in e.OldItems)
-                    item.PropertyChanged -= OnPropertyChanged;
+                foreach (ExcelItem oldItem in e.OldItems)
+                    oldItem.PropertyChanged -= OnPropertyChanged;
         }
 
         public FileCommand FileCommand { get; set; }
@@ -164,6 +160,8 @@ namespace Gensler.Revit.Excelerator.Views
                 categories.Add(cat);
 
             CategoryItems = categories;
+            ParameterItems = new ObservableCollection<ParamField>();
+            ExcelItems = new ObservableCollection<ExcelItem>();
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
