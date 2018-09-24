@@ -73,10 +73,10 @@ namespace Gensler.Revit.Excelerator.Models
         }
 
         private List<object> GetCellValues(Range range)
-        {
+        {         
             var values = (object[,])range.Value2;
-            var rows = values.GetLength(0);
-            var cols = values.GetLength(1);
+            var rows = values?.GetLength(0);
+            var cols = values?.GetLength(1);
             var items = new List<object>();
 
             for (var i = 1; i <= rows; ++i)

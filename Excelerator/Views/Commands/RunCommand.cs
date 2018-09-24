@@ -38,6 +38,7 @@ namespace Gensler.Revit.Excelerator.Views
             importer.HideScheduleKeyName(document, schedule);
             importer.AddKeysToSchedule(document, schedule, numRows);
             importer.AddDataToKeys(document, schedule, _viewModel.ExcelItems, numRows, numCols);
+            importer.Quit();
 
             window?.Close();
         }

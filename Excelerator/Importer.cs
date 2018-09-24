@@ -1,31 +1,41 @@
-﻿using System;
-using System.Linq;
-using ArgumentOutOfRangeException = Autodesk.Revit.Exceptions.ArgumentOutOfRangeException;
+﻿
+
+
 
 namespace Gensler.Revit.Excelerator
 {
     using Autodesk.Revit.DB;
     using Models;
     using Microsoft.Office.Interop.Excel;
+    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
     class Importer
     {
         private readonly Application _excelApp;
+        private readonly string _excelPath;
         private ExcelItem _excelItem;
 
-        public Importer(string path)
+        public Importer(string excelPath)
         {
+            _excelPath = excelPath;
             _excelApp = new Application();
-            _excelApp.Workbooks.Open(path);
         }
 
         public void SelectData(ExcelItem item)
         {
-            _excelItem = item;
+            _excelApp.Workbooks.Open(_excelPath);
             _excelApp.Visible = true;
             _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
+            _excelItem = item;
+            _excelItem.ExcelRange = _excelApp.Selection;
+        }
+
+        public void Quit()
+        {
+            _excelApp.Workbooks.Close();
+            _excelApp.Quit();
         }
 
         public ViewSchedule GetNewSchedule(Document document, Category category)
@@ -79,22 +89,6 @@ namespace Gensler.Revit.Excelerator
                 {
                     var name = item.RevitParam.Name;
                     var obj = item.Values[i];
-
-                    //switch (obj)
-                    //{
-                    //    case string _:
-                    //        dataRow.Add(name, item.Values[i].ToString());
-                    //        continue;
-                    //    case double _:
-                    //        dataRow.Add(name, item.Values[i].ToString());
-                    //        continue;
-                    //    case DateTime _:
-                    //        dataRow.Add(name, item.Values[i].ToString());
-                    //        continue;
-                    //    default:
-                    //        dataRow.Add(name, "");
-                    //        break;
-                    //}
 
                     if (obj == null)
                     {
