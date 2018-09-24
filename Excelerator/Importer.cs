@@ -1,18 +1,23 @@
-﻿
-
-
-
-namespace Gensler.Revit.Excelerator
+﻿namespace Gensler.Revit.Excelerator
 {
-    using Autodesk.Revit.DB;
-    using Models;
-    using Microsoft.Office.Interop.Excel;
+    using System;
     using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using Microsoft.Office.Interop.Excel;
+    using Autodesk.Revit.DB;
+    using Models;
 
     class Importer
     {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
         private readonly Application _excelApp;
         private readonly string _excelPath;
         private ExcelItem _excelItem;
@@ -20,16 +25,21 @@ namespace Gensler.Revit.Excelerator
         public Importer(string excelPath)
         {
             _excelPath = excelPath;
-            _excelApp = new Application();
+            _excelApp = new Application {Visible = false};
         }
 
         public void SelectData(ExcelItem item)
         {
-            _excelItem = item;
+            var caption = _excelApp.Caption;
+            var handler = FindWindow(null, caption);
+
+            SetForegroundWindow(handler);
+
             _excelApp.Workbooks.Open(_excelPath);
-            _excelItem.ExcelRange = _excelApp.Selection;           
-            _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
             _excelApp.Visible = true;
+            _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
+            _excelItem = item;
+            _excelItem.ExcelRange = _excelApp.Selection;           
         }
 
         public void Quit()
