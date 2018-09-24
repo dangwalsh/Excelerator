@@ -25,11 +25,11 @@ namespace Gensler.Revit.Excelerator
 
         public void SelectData(ExcelItem item)
         {
-            _excelApp.Workbooks.Open(_excelPath);
-            _excelApp.Visible = true;
-            _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
             _excelItem = item;
-            _excelItem.ExcelRange = _excelApp.Selection;
+            _excelApp.Workbooks.Open(_excelPath);
+            _excelItem.ExcelRange = _excelApp.Selection;           
+            _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
+            _excelApp.Visible = true;
         }
 
         public void Quit()
@@ -88,15 +88,20 @@ namespace Gensler.Revit.Excelerator
                 foreach (var item in excelItems)
                 {
                     var name = item.RevitParam.Name;
-                    var obj = item.Values[i];
-
-                    if (obj == null)
+                    if (i >= item.Values.Count)
                     {
                         dataRow.Add(name, "");
                         continue;
                     }
-                        
-                    dataRow.Add(name, item.Values[i].ToString());
+
+                    var obj = item.Values[i];
+                    if (obj is null)
+                    {
+                        dataRow.Add(name, "");
+                        continue;
+                    }
+
+                    dataRow.Add(name, obj.ToString());
                 }
 
                 dataRows.Add(dataRow);

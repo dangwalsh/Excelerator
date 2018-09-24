@@ -62,7 +62,7 @@ namespace Gensler.Revit.Excelerator.Models
             set
             {
                 _excelRange = value;
-                _values = GetCellValues(_excelRange);
+                _values = GetCellsByColumn(_excelRange);
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExcelRange)));
             }
         }
@@ -72,8 +72,8 @@ namespace Gensler.Revit.Excelerator.Models
             PropertyChanged?.Invoke(this, e);
         }
 
-        private List<object> GetCellValues(Range range)
-        {         
+        private List<object> GetCellsByRow(Range range)
+        {
             var values = (object[,])range.Value2;
             var rows = values?.GetLength(0);
             var cols = values?.GetLength(1);
@@ -81,6 +81,22 @@ namespace Gensler.Revit.Excelerator.Models
 
             for (var i = 1; i <= rows; ++i)
                 for (var j = 1; j <= cols; ++j)
+                    items.Add(values[i, j]);
+
+            Count = items.Count;
+
+            return items;
+        }
+
+        private List<object> GetCellsByColumn(Range range)
+        {
+            var values = (object[,])range.Value2;
+            var rows = values?.GetLength(0);
+            var cols = values?.GetLength(1);
+            var items = new List<object>();
+
+            for (var j = 1; j <= cols; ++j)
+                for (var i = 1; i <= rows; ++i)
                     items.Add(values[i, j]);
 
             Count = items.Count;
