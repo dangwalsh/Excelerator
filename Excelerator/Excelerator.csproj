@@ -67,8 +67,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ParamField.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RevitApplication.cs" />
     <Compile Include="RevitCommand.cs" />
-    <Compile Include="ExcelFacade.cs" />
     <Compile Include="Models\ExcelItem.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="Models\Column.cs" />
@@ -93,6 +98,7 @@
     <Content Include="Excelerator.addin">
       <SubType>Designer</SubType>
     </Content>
+    <Resource Include="Resources\excel.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -110,9 +116,16 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)Excelerator.addin" "$(AppData)\Autodesk\REVIT\Addins\2017" 
+    <PostBuildEvent>copy "$(ProjectDir)Excelerator.addin" "$(AppData)\Autodesk\REVIT\Addins\2017"
+copy "$(ProjectDir)Resouces\excel.png" "$(AppData)\Autodesk\REVIT\Addins\2017" 
 copy "$(ProjectDir)bin\debug\Excelerator.dll" "$(AppData)\Autodesk\REVIT\Addins\2017"</PostBuildEvent>
   </PropertyGroup>
 </Project>
