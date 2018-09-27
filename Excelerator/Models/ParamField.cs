@@ -12,7 +12,7 @@ namespace Gensler.Revit.Excelerator.Models
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 _name = value;
@@ -22,7 +22,7 @@ namespace Gensler.Revit.Excelerator.Models
 
         public SchedulableField Field
         {
-            get { return _field; }
+            get => _field;
             set
             {
                 _field = value;

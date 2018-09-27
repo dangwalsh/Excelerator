@@ -22,6 +22,8 @@
         private readonly string _excelPath;
         private ExcelItem _excelItem;
 
+        public static List<Category> RevitCategories => ScheduleFacade.GetCategories();
+
         public Importer(string excelPath)
         {
             _excelPath = excelPath;

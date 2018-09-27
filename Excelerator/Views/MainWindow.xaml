@@ -43,6 +43,8 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
+                <!--<Rectangle Grid.Column="1" Fill="DarkGray"/>-->
+                <!--<Rectangle Grid.Column="2" Fill="DarkGray"/>-->
                 <Label Grid.Column="2" Style="{DynamicResource labelStyle}" Content="Mapping"/>
             </Grid>
             <Grid Grid.Row="2" Style="{DynamicResource gridStyle}" IsEnabled="{Binding IsLoaded}">
@@ -51,7 +53,7 @@
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <ListBox Grid.Column="0" Name="SelectParam" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Name"  BorderThickness="0">
+                <ListBox Grid.Column="0" Name="SelectParam" ItemsSource="{Binding ParameterItems}" DisplayMemberPath="Name"  BorderThickness="0" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding SelectParamCommand}" CommandParameter="{Binding ElementName=SelectParam, Path=SelectedItem}"/>
@@ -68,12 +70,14 @@
                     <Button Grid.Row="1" Style="{DynamicResource btnStyleWide}" Content="&gt;" Command="{Binding AddCommand}"/>
                     <Button Grid.Row="2" Style="{DynamicResource btnStyleWide}" Content="&lt;" Command="{Binding RemoveCommand}"/>
                 </Grid>
+
                 <ListView Grid.Column="2" Name="ParameterMap" ItemsSource="{Binding ExcelItems}" BorderThickness="0">
                     <ListView.View>
+                        <!--<GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle1}">-->
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn HeaderTemplate="{DynamicResource NameHeader}"  CellTemplate="{DynamicResource NameCell}" />
-                                <GridViewColumn HeaderTemplate="{DynamicResource SheetHeader}">
+                                <GridViewColumn Header="Name"  Width="130" CellTemplate="{DynamicResource NameCell}" />
+                                <GridViewColumn Header="Sheet" Width="65">
                                     <GridViewColumn.DisplayMemberBinding>
                                         <Binding Path="ExcelRange">
                                             <Binding.Converter>
@@ -82,7 +86,7 @@
                                         </Binding>
                                     </GridViewColumn.DisplayMemberBinding>
                                 </GridViewColumn>
-                                <GridViewColumn HeaderTemplate="{DynamicResource RangeHeader}" >
+                                <GridViewColumn Header="Range" Width="65">
                                     <GridViewColumn.DisplayMemberBinding>
                                         <Binding Path="ExcelRange">
                                             <Binding.Converter>
@@ -91,7 +95,7 @@
                                         </Binding>
                                     </GridViewColumn.DisplayMemberBinding>
                                 </GridViewColumn>
-                                <GridViewColumn HeaderTemplate="{DynamicResource SelectHeader}" >
+                                <GridViewColumn Header="Sel" Width="30">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{DynamicResource btnStyleFixed}" Command="{Binding EditCommand, Source={StaticResource WindowViewModel}}" IsEnabled="{Binding IsActive}"/>

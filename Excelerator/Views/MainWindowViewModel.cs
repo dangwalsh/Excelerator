@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Gensler.Revit.Excelerator.Views
+﻿namespace Gensler.Revit.Excelerator.Views
 {
     using Autodesk.Revit.DB;
     using System.Collections.ObjectModel;
@@ -8,7 +6,6 @@ namespace Gensler.Revit.Excelerator.Views
     using System.Linq;
     using System.Collections.Specialized;
     using Models;
-    using System;
 
     class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -24,8 +21,6 @@ namespace Gensler.Revit.Excelerator.Views
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Importer Importer { get; private set; }
-        //public int NumRows { get; set; }
-        //public int NumCols { get; set; }
 
         public bool IsLoaded
         {
@@ -154,12 +149,7 @@ namespace Gensler.Revit.Excelerator.Views
             EditCommand = new EditCommand(this);
             RunCommand = new RunCommand(this);
 
-            var catList = ScheduleFacade.GetCategories();
-            var categories = new ObservableCollection<Category>();
-            foreach (Category cat in catList.OrderBy(x => x.Name))
-                categories.Add(cat);
-
-            CategoryItems = categories;
+            CategoryItems = new ObservableCollection<Category>(Importer.RevitCategories.OrderBy(x => x.Name));
             ParameterItems = new ObservableCollection<ParamField>();
             ExcelItems = new ObservableCollection<ExcelItem>();
         }

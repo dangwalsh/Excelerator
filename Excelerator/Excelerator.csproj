@@ -76,7 +76,6 @@
     <Compile Include="RevitCommand.cs" />
     <Compile Include="Models\ExcelItem.cs" />
     <Compile Include="Importer.cs" />
-    <Compile Include="Models\Column.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduleFacade.cs" />
     <Compile Include="Views\Commands\RemoveCommand.cs" />
@@ -103,13 +102,15 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindowResourcesAlt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainWindowResources.xaml">
       <SubType>Designer</SubType>

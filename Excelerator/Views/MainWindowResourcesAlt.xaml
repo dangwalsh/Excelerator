@@ -6,7 +6,7 @@
 
     <!--Grid Styles-->
     <Style x:Key="gridStyle" TargetType="{x:Type Grid}">
-        <Setter Property="ShowGridLines" Value="True"/>
+        <Setter Property="ShowGridLines" Value="False"/>
     </Style>
 
     
@@ -41,11 +41,12 @@
 
     <!--Button Style-->
     <Style x:Key="btnStyle" TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
     <Style x:Key="btnStyleWide" TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0"></Setter>
     </Style>
 
     <Style x:Key="btnStyleFixed" TargetType="{x:Type Button}">
@@ -56,17 +57,13 @@
 
     <!--ComboBox Style-->
     <Style x:Key="cmbBoxStyle" TargetType="{x:Type ComboBox}">
-        <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="6"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="IsEditable" Value="True"/>
-        <Setter Property="IsReadOnly" Value="True"/>
+
     </Style>
     
 
     <!--Label Style-->
     <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Margin" Value="0,10,0,10"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
@@ -87,10 +84,7 @@
 
     <!--TextBox Style-->
     <Style x:Key="txtBoxStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="6"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <!--<Setter Property="PlaceholderText" Value="Excel file..."/>-->
+        <Setter Property="BorderThickness" Value="0"/>
         <Style.Resources>
             <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                 <VisualBrush.Visual>
@@ -134,10 +128,25 @@
         <TextBlock Text="Range" Style="{StaticResource MedHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="SelectHeader">
-        <TextBlock Text="Sel" Style="{StaticResource NarHeaderText}"/>
+        <TextBlock Text="Sel" Style="{StaticResource MedHeaderText}"/>
     </DataTemplate>
     <DataTemplate x:Key="NameCell">
         <TextBlock Text="{Binding RevitParam.Name}" />
     </DataTemplate>
+    <Style x:Key="GridViewColumnHeaderStyle1" TargetType="{x:Type GridViewColumnHeader}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                    <Border BorderThickness="0" BorderBrush="LightGray" Background="Transparent">
+                        <TextBlock x:Name="ContentHeader" Padding="2" Text="{TemplateBinding Content}" Width="{TemplateBinding Width}" Background="#FFFAFAFA"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Foreground" Value="#FF555555" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
 
 </ResourceDictionary>
