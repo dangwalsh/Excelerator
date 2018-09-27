@@ -97,8 +97,6 @@
     <Content Include="Excelerator.addin">
       <SubType>Designer</SubType>
     </Content>
-    <Resource Include="Resources\hand-left.png" />
-    <Resource Include="Resources\hand-right.png" />
     <Resource Include="Resources\excel.png" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +117,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

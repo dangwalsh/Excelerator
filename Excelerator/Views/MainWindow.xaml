@@ -70,10 +70,10 @@
                         <RowDefinition Style="{DynamicResource rowStyleBtn}"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="1" Style="{DynamicResource myButtonStyle}" Command="{Binding AddCommand}">
+                    <Button Grid.Row="1"  Command="{Binding AddCommand}" Style="{DynamicResource btnStyleWide}">
                         <Polyline Stroke="DarkGray" StrokeThickness="4" Points="0,0 10,10 0,20"/>
                     </Button>
-                    <Button Grid.Row="2" Style="{DynamicResource myButtonStyle}" Command="{Binding RemoveCommand}">
+                    <Button Grid.Row="2"  Command="{Binding RemoveCommand}" Style="{DynamicResource btnStyleWide}">
                         <Polyline Stroke="DarkGray" StrokeThickness="4" Points="10,0 0,10 10,20"/>
                     </Button>
                 </Grid>
