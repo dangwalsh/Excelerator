@@ -41,7 +41,7 @@
                     <ColumnDefinition Style="{DynamicResource colStyleSep}"/>
                     <ColumnDefinition Style="{DynamicResource colStyleFlex}"/>
                 </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Style="{DynamicResource grpBoxStyle}" Header="Category Parameters">
+                <GroupBox Grid.Column="0" Style="{DynamicResource GroupBoxStyleNoShadow}" Header="Category Parameters">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Style="{DynamicResource rowStyleFixed}"/>
@@ -77,7 +77,7 @@
                         <Polyline Stroke="DarkGray" StrokeThickness="4" Points="10,0 0,10 10,20"/>
                     </Button>
                 </Grid>
-                <GroupBox Grid.Column="2" Style="{DynamicResource grpBoxStyle}" Header="Parameter Mapping">
+                <GroupBox Grid.Column="2" Style="{DynamicResource GroupBoxStyleNoShadow}" Header="Parameter Mapping">
                     <ListView Name="ParameterMap" ItemsSource="{Binding ExcelItems}" Style="{DynamicResource lstViewStyle}">
                         <ListView.View>
                             <GridView>
