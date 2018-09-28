@@ -124,6 +124,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)Excelerator.addin" "$(AppData)\Autodesk\REVIT\Addins\2017"
 
+
 copy "$(ProjectDir)bin\debug\Excelerator.dll" "$(AppData)\Autodesk\REVIT\Addins\2017"</PostBuildEvent>
   </PropertyGroup>
 </Project>
