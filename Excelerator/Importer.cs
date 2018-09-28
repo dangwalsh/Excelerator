@@ -41,7 +41,7 @@
             _excelApp.Visible = true;
             _excelApp.SheetSelectionChange += OnSheetSelectionChanged;
             _excelItem = item;
-            _excelItem.ExcelRange = _excelApp.Selection;           
+            _excelItem.ExcelRange = _excelApp.Selection as Range;           
         }
 
         public void Quit()
