@@ -9,10 +9,11 @@
     {
         static void AddRibbonPanel(UIControlledApplication application)
         {
-            const string tabName = "Atlanta";
-            application.CreateRibbonTab(tabName);
-            
-            var ribbonPanel = application.CreateRibbonPanel(tabName, "Tools");
+            // const string tabName = "Add-Ins";
+            // application.CreateRibbonTab(tabName);
+
+            // var ribbonPanel = application.CreateRibbonPanel(tabName, "Tools");
+            var ribbonPanel = application.CreateRibbonPanel(Tab.AddIns, "Atlanta");
             var thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
             var pushButtonData = new PushButtonData("Excelerator", "Import" + Environment.NewLine + "Excel", thisAssemblyPath, "Gensler.Revit.Excelerator.RevitCommand");
 
