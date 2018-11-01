@@ -11,7 +11,7 @@
   </AddIn>-->
   <AddIn Type="Application">
     <Name>Excelerator</Name>
-    <Assembly>Excelerator.dll</Assembly>
+    <Assembly>Gensler.Revit/Excelerator.dll</Assembly>
     <FullClassName>Gensler.Revit.Excelerator.RevitApplication</FullClassName>
     <ClientId>36B5A14F-DAA7-45FE-9E99-AB33717935B5</ClientId>
     <VendorId>1337</VendorId>
