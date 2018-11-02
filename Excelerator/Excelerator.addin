@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RevitAddIns>
-  <!--<AddIn Type="Command">
-    <Text>Excel Importer</Text>
-    <Description>Import Room data from Excel</Description>
-    <Assembly>Excelerator.dll</Assembly>
-    <FullClassName>Gensler.Revit.Excelerator.RevitCommand</FullClassName>
-    <ClientId>C394D79B-A96B-4F33-8D36-268A72070AD1</ClientId>
-    <VendorId>1337</VendorId>
-    <VendorDescription>DGW</VendorDescription>
-  </AddIn>-->
   <AddIn Type="Application">
     <Name>Excelerator</Name>
     <Assembly>Gensler.Revit/Excelerator.dll</Assembly>
