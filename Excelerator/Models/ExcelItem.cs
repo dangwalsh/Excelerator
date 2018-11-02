@@ -88,7 +88,7 @@
 
         private List<object> GetCellsByColumn(Range range)
         {
-            var values = (object[,])range.Value2;
+            var values = range.Value2 as object[,];
             var rows = values?.GetLength(0);
             var cols = values?.GetLength(1);
             var items = new List<object>();
