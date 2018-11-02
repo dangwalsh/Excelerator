@@ -123,8 +123,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)Excelerator.addin" "$(AppData)\Autodesk\REVIT\Addins\2017"
-
-    
-copy "$(ProjectDir)bin\debug\Excelerator.dll" "$(AppData)\Autodesk\REVIT\Addins\2017\Gensler.Revit"</PostBuildEvent>
+copy "$(ProjectDir)bin\release\Excelerator.dll" "$(AppData)\Autodesk\REVIT\Addins\2017\Gensler.Revit"</PostBuildEvent>
   </PropertyGroup>
 </Project>
