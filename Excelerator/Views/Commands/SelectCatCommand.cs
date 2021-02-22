@@ -12,7 +12,11 @@ namespace Gensler.Revit.Excelerator.Views
     {
         private readonly MainWindowViewModel _viewModel;
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter)
         {
